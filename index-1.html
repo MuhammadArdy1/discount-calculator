@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- META & SEO -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Kalkulator Diskon & Compound Interest — multi mata uang, responsif." />
+  <title>Kalkulator Finansial</title>
+
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background ambient glow -->
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <main class="wrapper">
+
+    <!-- ===== HEADER ===== -->
+    <header class="app-header">
+      <div class="logo-mark" aria-hidden="true">₿</div>
+      <h1 class="app-title">Kalkulator<br /><span>Finansial</span></h1>
+      <p class="app-subtitle">Diskon & Compound Interest — multi mata uang</p>
+    </header>
+
+    <!-- ===== TAB SWITCHER ===== -->
+    <div class="tab-bar" role="tablist">
+      <button class="tab-btn tab-btn--active" id="tabDiskon" role="tab" aria-selected="true" aria-controls="panelDiskon">
+        🏷️ Diskon
+      </button>
+      <button class="tab-btn" id="tabCompound" role="tab" aria-selected="false" aria-controls="panelCompound">
+        📈 Compound
+      </button>
+    </div>
+
+    <!-- ===== PILIH MATA UANG ===== -->
+    <div class="currency-bar">
+      <label class="currency-label">Mata Uang</label>
+      <div class="currency-pills" id="currencyPills">
+        <button class="pill pill--active" data-currency="IDR" data-symbol="Rp" data-locale="id-ID">🇮🇩 IDR</button>
+        <button class="pill" data-currency="USD" data-symbol="$" data-locale="en-US">🇺🇸 USD</button>
+        <button class="pill" data-currency="EUR" data-symbol="€" data-locale="de-DE">🇪🇺 EUR</button>
+        <button class="pill" data-currency="MYR" data-symbol="RM" data-locale="ms-MY">🇲🇾 MYR</button>
+        <button class="pill" data-currency="SGD" data-symbol="S$" data-locale="en-SG">🇸🇬 SGD</button>
+        <button class="pill" data-currency="JPY" data-symbol="¥" data-locale="ja-JP">🇯🇵 JPY</button>
+      </div>
+    </div>
+
+    <!-- ===== PANEL DISKON ===== -->
+    <section class="card" id="panelDiskon" role="tabpanel" aria-labelledby="tabDiskon">
+
+      <!-- Harga Awal -->
+      <div class="field" id="field-price">
+        <label class="field-label" for="originalPrice">Harga Awal</label>
+        <div class="input-wrap">
+          <span class="input-prefix" id="prefixDiskon">Rp</span>
+          <input id="originalPrice" class="field-input" type="text" inputmode="numeric"
+            placeholder="150.000" autocomplete="off" aria-describedby="err-price" />
+        </div>
+        <span class="field-error" id="err-price" role="alert" aria-live="polite"></span>
+      </div>
+
+      <!-- Persentase Diskon -->
+      <div class="field" id="field-discount">
+        <label class="field-label" for="discountPercent">Diskon (%)</label>
+        <div class="input-wrap">
+          <input id="discountPercent" class="field-input" type="text" inputmode="numeric"
+            placeholder="25" autocomplete="off" aria-describedby="err-discount" />
+          <span class="input-suffix">%</span>
+        </div>
+        <span class="field-error" id="err-discount" role="alert" aria-live="polite"></span>
+        <div class="slider-wrap" aria-hidden="true">
+          <input id="discountSlider" class="slider" type="range" min="0" max="100" value="0" tabindex="-1" />
+          <div class="slider-labels">
+            <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tombol -->
+      <div class="btn-group">
+        <button id="btnCalculate" class="btn btn--primary" type="button">⚡ Hitung Diskon</button>
+        <button id="btnReset" class="btn btn--ghost" type="button">↺ Reset</button>
+      </div>
+    </section>
+
+    <!-- ===== HASIL DISKON ===== -->
+    <section class="card card--result" id="resultCard" aria-label="Hasil Diskon" aria-live="polite">
+      <div class="ring-wrap" aria-hidden="true">
+        <svg class="ring-svg" viewBox="0 0 120 120">
+          <circle class="ring-track" cx="60" cy="60" r="50" />
+          <circle class="ring-progress" id="ringProgress" cx="60" cy="60" r="50" />
+        </svg>
+        <div class="ring-label">
+          <span class="ring-pct" id="ringPct">0%</span>
+          <span class="ring-caption">diskon</span>
+        </div>
+      </div>
+      <div class="result-grid">
+        <div class="result-item result-item--featured">
+          <span class="result-eyebrow">Harga Akhir</span>
+          <span class="result-value" id="finalPrice">Rp 0</span>
+        </div>
+        <div class="result-item">
+          <span class="result-eyebrow">Kamu Hemat</span>
+          <span class="result-value result-value--savings" id="savings">Rp 0</span>
+        </div>
+        <div class="result-item result-item--muted">
+          <span class="result-eyebrow">Dari Harga</span>
+          <span class="result-value result-value--sm" id="origRef">Rp 0</span>
+        </div>
+      </div>
+      <p class="savings-badge" id="savingsBadge" aria-live="polite"></p>
+    </section>
+
+    <!-- ===== PANEL COMPOUND ===== -->
+    <section class="card" id="panelCompound" role="tabpanel" aria-labelledby="tabCompound" style="display:none;">
+
+      <!-- Modal Awal -->
+      <div class="field">
+        <label class="field-label" for="principal">Modal Awal</label>
+        <div class="input-wrap">
+          <span class="input-prefix" id="prefixCompound">Rp</span>
+          <input id="principal" class="field-input" type="text" inputmode="numeric"
+            placeholder="10.000.000" autocomplete="off" aria-describedby="err-principal" />
+        </div>
+        <span class="field-error" id="err-principal" role="alert" aria-live="polite"></span>
+      </div>
+
+      <!-- Bunga per Tahun -->
+      <div class="field">
+        <label class="field-label" for="interestRate">Bunga per Tahun (%)</label>
+        <div class="input-wrap">
+          <input id="interestRate" class="field-input" type="text" inputmode="decimal"
+            placeholder="8" autocomplete="off" aria-describedby="err-rate" />
+          <span class="input-suffix">%</span>
+        </div>
+        <span class="field-error" id="err-rate" role="alert" aria-live="polite"></span>
+      </div>
+
+      <!-- Periode -->
+      <div class="field">
+        <label class="field-label" for="compoundFreq">Frekuensi Bunga</label>
+        <div class="input-wrap input-wrap--select">
+          <select id="compoundFreq" class="field-select">
+            <option value="1">Tahunan (1x/tahun)</option>
+            <option value="2">Per 6 Bulan (2x/tahun)</option>
+            <option value="4">Kuartalan (4x/tahun)</option>
+            <option value="12" selected>Bulanan (12x/tahun)</option>
+            <option value="365">Harian (365x/tahun)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Lama Investasi -->
+      <div class="field">
+        <label class="field-label" for="years">Lama Investasi (Tahun)</label>
+        <div class="input-wrap">
+          <input id="years" class="field-input" type="text" inputmode="numeric"
+            placeholder="10" autocomplete="off" aria-describedby="err-years" />
+          <span class="input-suffix">thn</span>
+        </div>
+        <span class="field-error" id="err-years" role="alert" aria-live="polite"></span>
+        <div class="slider-wrap" aria-hidden="true">
+          <input id="yearsSlider" class="slider" type="range" min="1" max="50" value="10" tabindex="-1" />
+          <div class="slider-labels">
+            <span>1</span><span>10</span><span>20</span><span>30</span><span>50</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tombol -->
+      <div class="btn-group">
+        <button id="btnCompound" class="btn btn--primary" type="button">📈 Hitung</button>
+        <button id="btnResetCompound" class="btn btn--ghost" type="button">↺ Reset</button>
+      </div>
+    </section>
+
+    <!-- ===== HASIL COMPOUND ===== -->
+    <section class="card card--result card--compound" id="resultCompound" aria-label="Hasil Compound" aria-live="polite">
+      <div class="compound-hero">
+        <span class="result-eyebrow">Nilai Akhir Investasi</span>
+        <span class="result-value result-value--hero" id="compFinalValue">Rp 0</span>
+      </div>
+      <div class="result-grid">
+        <div class="result-item">
+          <span class="result-eyebrow">Modal Awal</span>
+          <span class="result-value result-value--sm result-value--muted" id="compPrincipal">Rp 0</span>
+        </div>
+        <div class="result-item">
+          <span class="result-eyebrow">Total Bunga</span>
+          <span class="result-value result-value--sm result-value--savings" id="compInterest">Rp 0</span>
+        </div>
+        <div class="result-item result-item--featured">
+          <span class="result-eyebrow">Keuntungan</span>
+          <span class="result-value result-value--savings" id="compGain">+0%</span>
+        </div>
+      </div>
+
+      <!-- Tabel pertumbuhan per tahun -->
+      <div class="growth-table-wrap">
+        <p class="growth-title">📊 Pertumbuhan Per Tahun</p>
+        <div class="growth-table" id="growthTable"></div>
+      </div>
+
+      <p class="savings-badge" id="compBadge" aria-live="polite"></p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Dibuat dengan ❤️ — Kalkulator Finansial v2.0</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
