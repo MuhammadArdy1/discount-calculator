@@ -1,0 +1,622 @@
+/* ================================================================
+   KALKULATOR DISKON — style.css
+   Mobile-first, minimalis, dark-navy theme
+   Palette:
+     --navy-deep  : #0F172A  (background)
+     --navy-card  : #1E293B  (card surface)
+     --navy-border: #334155  (dividers)
+     --text-primary: #F8FAFC
+     --text-muted  : #94A3B8
+     --amber       : #F59E0B  (accent / CTA)
+     --emerald     : #10B981  (savings)
+     --ruby        : #F43F5E  (error)
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   1. CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+   ---------------------------------------------------------------- */
+:root {
+  --navy-deep:   #0F172A;
+  --navy-card:   #1E293B;
+  --navy-border: #334155;
+  --text-primary:#F8FAFC;
+  --text-muted:  #94A3B8;
+  --amber:       #F59E0B;
+  --amber-glow:  rgba(245, 158, 11, 0.18);
+  --emerald:     #10B981;
+  --emerald-glow:rgba(16, 185, 129, 0.15);
+  --ruby:        #F43F5E;
+  --ruby-glow:   rgba(244, 63, 94, 0.15);
+
+  /* Typography */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+
+  /* Spacing scale */
+  --space-xs:  0.375rem;
+  --space-sm:  0.625rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2rem;
+  --space-2xl: 3rem;
+
+  /* Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --ease-snap: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out:  cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ----------------------------------------------------------------
+   2. CSS RESET & BASE
+   ---------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--navy-deep);
+  color: var(--text-primary);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-xl) var(--space-md) var(--space-lg);
+  /* Subtle texture via SVG noise */
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(245,158,11,0.08) 0%, transparent 70%);
+  overflow-x: hidden;
+}
+
+/* ----------------------------------------------------------------
+   3. AMBIENT BACKGROUND GLOW
+   ---------------------------------------------------------------- */
+.bg-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  /* Two soft glowing orbs */
+  background:
+    radial-gradient(600px circle at 20% 80%, rgba(245,158,11,0.06) 0%, transparent 60%),
+    radial-gradient(400px circle at 80% 20%, rgba(16,185,129,0.05) 0%, transparent 60%);
+}
+
+/* ----------------------------------------------------------------
+   4. LAYOUT WRAPPER
+   ---------------------------------------------------------------- */
+.wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* ----------------------------------------------------------------
+   5. APP HEADER
+   ---------------------------------------------------------------- */
+.app-header {
+  text-align: center;
+  padding-top: var(--space-md);
+}
+
+/* Tanda persen dekoratif */
+.logo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background: var(--amber-glow);
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--amber);
+  margin-bottom: var(--space-md);
+  /* Micro-bounce on load */
+  animation: popIn 0.5s var(--ease-snap) both;
+}
+
+.app-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 6vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+/* "Diskon" dalam judul dapat aksen amber */
+.app-title span {
+  color: var(--amber);
+}
+
+.app-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-top: var(--space-xs);
+}
+
+/* ----------------------------------------------------------------
+   6. CARD
+   ---------------------------------------------------------------- */
+.card {
+  background: var(--navy-card);
+  border: 1px solid var(--navy-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  /* Subtle inner glow */
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.03),
+    0 20px 40px rgba(0,0,0,0.4);
+}
+
+/* ----------------------------------------------------------------
+   7. INPUT FIELDS
+   ---------------------------------------------------------------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.field-label {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Wrapper input + prefix/suffix */
+.input-wrap {
+  display: flex;
+  align-items: stretch;
+  background: var(--navy-deep);
+  border: 1.5px solid var(--navy-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+
+/* Fokus state: highlight amber */
+.input-wrap:focus-within {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px var(--amber-glow);
+}
+
+/* State error */
+.input-wrap.has-error {
+  border-color: var(--ruby);
+  box-shadow: 0 0 0 3px var(--ruby-glow);
+}
+
+.input-prefix,
+.input-suffix {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-sm);
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.03);
+  border-right: 1px solid var(--navy-border);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.input-suffix {
+  border-right: none;
+  border-left: 1px solid var(--navy-border);
+}
+
+.field-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0.85rem var(--space-md);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  min-width: 0;
+  /* Hilangkan spinner bawaan browser */
+  -moz-appearance: textfield;
+}
+
+.field-input::placeholder {
+  color: var(--navy-border);
+}
+
+/* Pesan error */
+.field-error {
+  font-size: 0.78rem;
+  color: var(--ruby);
+  min-height: 1rem;
+  padding-left: 2px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.field-error.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ----------------------------------------------------------------
+   8. SLIDER DISKON
+   ---------------------------------------------------------------- */
+.slider-wrap {
+  margin-top: var(--space-xs);
+}
+
+.slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--navy-border);
+  outline: none;
+  cursor: pointer;
+  /* warna track diisi via JS dengan CSS custom property */
+  background: linear-gradient(
+    to right,
+    var(--amber) 0%,
+    var(--amber) var(--slider-pct, 0%),
+    var(--navy-border) var(--slider-pct, 0%),
+    var(--navy-border) 100%
+  );
+}
+
+/* Thumb */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 2px solid var(--navy-deep);
+  box-shadow: 0 0 0 3px var(--amber-glow);
+  transition: transform 0.15s var(--ease-snap), box-shadow 0.15s;
+}
+
+.slider::-webkit-slider-thumb:hover,
+.slider:focus::-webkit-slider-thumb {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 5px var(--amber-glow);
+}
+
+.slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 2px solid var(--navy-deep);
+  cursor: pointer;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-xs);
+  font-size: 0.7rem;
+  color: var(--navy-border);
+  user-select: none;
+}
+
+/* ----------------------------------------------------------------
+   9. TOMBOL AKSI
+   ---------------------------------------------------------------- */
+.btn-group {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: 0.9rem var(--space-md);
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  border: none;
+  transition:
+    transform 0.15s var(--ease-snap),
+    box-shadow 0.2s var(--ease-out),
+    background 0.2s;
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+.btn-icon {
+  font-size: 1rem;
+}
+
+/* Tombol Primer — amber */
+.btn--primary {
+  background: var(--amber);
+  color: #0F172A;
+  box-shadow: 0 4px 20px rgba(245,158,11,0.3);
+}
+
+.btn--primary:hover {
+  background: #FBBF24;
+  box-shadow: 0 6px 28px rgba(245,158,11,0.45);
+  transform: translateY(-1px);
+}
+
+/* Tombol Ghost — outline */
+.btn--ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1.5px solid var(--navy-border);
+}
+
+.btn--ghost:hover {
+  border-color: var(--text-muted);
+  color: var(--text-primary);
+  background: rgba(255,255,255,0.04);
+}
+
+/* ----------------------------------------------------------------
+   10. RESULT CARD
+   ---------------------------------------------------------------- */
+.card--result {
+  /* Tersembunyi secara default */
+  display: none;
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.4s var(--ease-out),
+    transform 0.4s var(--ease-out);
+  /* Border emerald saat muncul */
+  border-color: rgba(16,185,129,0.25);
+  box-shadow:
+    0 0 0 1px rgba(16,185,129,0.08),
+    0 20px 40px rgba(0,0,0,0.4),
+    0 0 60px rgba(16,185,129,0.06);
+}
+
+/* State aktif */
+.card--result.visible {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ----------------------------------------------------------------
+   11. SVG RING PROGRESS
+   ---------------------------------------------------------------- */
+.ring-wrap {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  flex-shrink: 0;
+}
+
+.ring-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); /* Mulai dari atas */
+}
+
+.ring-track {
+  fill: none;
+  stroke: var(--navy-border);
+  stroke-width: 8;
+}
+
+.ring-progress {
+  fill: none;
+  stroke: var(--amber);
+  stroke-width: 8;
+  stroke-linecap: round;
+  /* Panjang keliling = 2π × 50 ≈ 314 */
+  stroke-dasharray: 314;
+  stroke-dashoffset: 314; /* Penuh tersembunyi, diubah JS */
+  transition: stroke-dashoffset 0.6s var(--ease-out), stroke 0.3s;
+}
+
+/* Ring merah jika diskon > 70% (sangat besar) */
+.ring-progress.high {
+  stroke: var(--emerald);
+}
+
+.ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.ring-pct {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--amber);
+  line-height: 1;
+}
+
+.ring-caption {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ----------------------------------------------------------------
+   12. RESULT GRID
+   ---------------------------------------------------------------- */
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.result-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* Harga Akhir — selebar penuh */
+.result-item--featured {
+  grid-column: 1 / -1;
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--navy-border);
+}
+
+/* Muted = harga referensi */
+.result-item--muted .result-value {
+  color: var(--text-muted);
+}
+
+.result-divider {
+  display: none; /* Digantikan border pada featured item */
+}
+
+.result-eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.result-value {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+  /* Angka muncul dari bawah */
+  animation: none;
+}
+
+.result-value--savings {
+  color: var(--emerald);
+}
+
+.result-value--sm {
+  font-size: 1.1rem;
+}
+
+/* ----------------------------------------------------------------
+   13. SAVINGS BADGE
+   ---------------------------------------------------------------- */
+.savings-badge {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--emerald);
+  background: var(--emerald-glow);
+  border: 1px solid rgba(16,185,129,0.2);
+  border-radius: var(--radius-full);
+  padding: var(--space-xs) var(--space-md);
+  min-height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ----------------------------------------------------------------
+   14. SITE FOOTER
+   ---------------------------------------------------------------- */
+.site-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: var(--space-lg);
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--navy-border);
+}
+
+/* ----------------------------------------------------------------
+   15. ANIMASI
+   ---------------------------------------------------------------- */
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Class animasi yang ditambahkan JS setelah kalkulasi */
+.animate-in {
+  animation: countUp 0.4s var(--ease-out) both;
+}
+
+/* ----------------------------------------------------------------
+   16. REDUCED MOTION — hormati preferensi aksesibilitas
+   ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ----------------------------------------------------------------
+   17. RESPONSIVE — TABLET & UP
+   ---------------------------------------------------------------- */
+@media (min-width: 480px) {
+  body {
+    padding: var(--space-2xl) var(--space-xl);
+  }
+
+  .app-title {
+    font-size: 2.5rem;
+  }
+
+  .result-value {
+    font-size: 1.9rem;
+  }
+}

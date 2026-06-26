@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- ============================================================
+       META & SEO
+       ============================================================ -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Kalkulator Diskon profesional — hitung harga akhir dan penghematan Anda secara instan." />
+  <title>Kalkulator Diskon</title>
+
+  <!-- ============================================================
+       FONTS — Space Grotesk (display) + Inter (body)
+       ============================================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- ============================================================
+       STYLESHEET
+       ============================================================ -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       BACKGROUND DECORATION — ambient circle blur
+       ============================================================ -->
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       MAIN WRAPPER
+       ============================================================ -->
+  <main class="wrapper">
+
+    <!-- App Header -->
+    <header class="app-header">
+      <div class="logo-mark" aria-hidden="true">%</div>
+      <h1 class="app-title">Kalkulator<br /><span>Diskon</span></h1>
+      <p class="app-subtitle">Hitung harga akhir & penghematan Anda</p>
+    </header>
+
+    <!-- ============================================================
+         INPUT CARD
+         ============================================================ -->
+    <section class="card" aria-label="Form Input">
+
+      <!-- Harga Awal -->
+      <div class="field" id="field-price">
+        <label class="field-label" for="originalPrice">Harga Awal (Rp)</label>
+        <div class="input-wrap">
+          <span class="input-prefix" aria-hidden="true">Rp</span>
+          <input
+            id="originalPrice"
+            class="field-input"
+            type="text"
+            inputmode="numeric"
+            placeholder="150.000"
+            autocomplete="off"
+            aria-describedby="err-price"
+          />
+        </div>
+        <span class="field-error" id="err-price" role="alert" aria-live="polite"></span>
+      </div>
+
+      <!-- Persentase Diskon -->
+      <div class="field" id="field-discount">
+        <label class="field-label" for="discountPercent">Diskon (%)</label>
+        <div class="input-wrap">
+          <input
+            id="discountPercent"
+            class="field-input field-input--pct"
+            type="text"
+            inputmode="numeric"
+            placeholder="25"
+            autocomplete="off"
+            aria-describedby="err-discount"
+          />
+          <span class="input-suffix" aria-hidden="true">%</span>
+        </div>
+        <span class="field-error" id="err-discount" role="alert" aria-live="polite"></span>
+
+        <!-- Slider visual untuk diskon -->
+        <div class="slider-wrap" aria-hidden="true">
+          <input
+            id="discountSlider"
+            class="slider"
+            type="range"
+            min="0"
+            max="100"
+            value="0"
+            tabindex="-1"
+          />
+          <div class="slider-labels">
+            <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tombol Aksi -->
+      <div class="btn-group">
+        <button id="btnCalculate" class="btn btn--primary" type="button">
+          <span class="btn-icon" aria-hidden="true">⚡</span>
+          Hitung Diskon
+        </button>
+        <button id="btnReset" class="btn btn--ghost" type="button">
+          <span class="btn-icon" aria-hidden="true">↺</span>
+          Reset
+        </button>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         HASIL CARD — tersembunyi sampai dihitung
+         ============================================================ -->
+    <section class="card card--result" id="resultCard" aria-label="Hasil Perhitungan" aria-live="polite">
+
+      <!-- Ring visual persentase diskon -->
+      <div class="ring-wrap" aria-hidden="true">
+        <svg class="ring-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <!-- Track -->
+          <circle class="ring-track" cx="60" cy="60" r="50" />
+          <!-- Progress (diupdate via JS) -->
+          <circle class="ring-progress" id="ringProgress" cx="60" cy="60" r="50" />
+        </svg>
+        <div class="ring-label">
+          <span class="ring-pct" id="ringPct">0%</span>
+          <span class="ring-caption">diskon</span>
+        </div>
+      </div>
+
+      <!-- Angka Hasil -->
+      <div class="result-grid">
+
+        <!-- Harga Akhir -->
+        <div class="result-item result-item--featured">
+          <span class="result-eyebrow">Harga Akhir</span>
+          <span class="result-value" id="finalPrice">Rp 0</span>
+        </div>
+
+        <!-- Divider -->
+        <div class="result-divider" aria-hidden="true"></div>
+
+        <!-- Kamu Hemat -->
+        <div class="result-item">
+          <span class="result-eyebrow">Kamu Hemat</span>
+          <span class="result-value result-value--savings" id="savings">Rp 0</span>
+        </div>
+
+        <!-- Harga Awal (reference) -->
+        <div class="result-item result-item--muted">
+          <span class="result-eyebrow">Dari Harga</span>
+          <span class="result-value result-value--sm" id="origRef">Rp 0</span>
+        </div>
+      </div>
+
+      <!-- Pesan hemat -->
+      <p class="savings-badge" id="savingsBadge" aria-live="polite"></p>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="site-footer">
+    <p>Dibuat dengan ❤️ — Kalkulator Diskon v1.0</p>
+  </footer>
+
+  <!-- ============================================================
+       SCRIPT
+       ============================================================ -->
+  <script src="script.js"></script>
+</body>
+</html>
